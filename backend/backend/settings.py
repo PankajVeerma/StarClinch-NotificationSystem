@@ -31,7 +31,7 @@ SECRET_KEY =  os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -64,8 +64,14 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'backend.urls'
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
+    origin.strip()
+    for origin in os.getenv(
+        "CORS_ALLOWED_ORIGINS",
+        "http://localhost:5173"
+    ).split(",")
+    if origin.strip()
 ]
+
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
@@ -106,7 +112,7 @@ DATABASES = {
 
 POSTMARKAPP_TOKEN = os.getenv("POSTMARKAPP_TOKEN")
 POSTMARK_FROM_EMAIL = os.getenv("POSTMARK_FROM_EMAIL")
-print("Resend======")
+
 
 WHATSAPP_ACCESS_TOKEN = os.getenv("WHATSAPP_ACCESS_TOKEN")
 WHATSAPP_PHONE_NUMBER_ID = os.getenv("WHATSAPP_PHONE_NUMBER_ID")
